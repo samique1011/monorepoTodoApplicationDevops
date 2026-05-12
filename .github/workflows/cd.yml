@@ -1,0 +1,23 @@
+name: Continous Deployment
+on:
+    push:
+        branches:
+            [main]
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - name: SShing into the machine
+              uses: appleboy/ssh-action@v1.0.3
+              with:
+                host: ${{secrets.EC2_IP}}
+                username: ${{secrets.EC2_USERNAME}}
+                key: ${{secrets.EC2_PVT_SSH_KEY}}
+                script_stop: true
+                script: |
+                    cd /home/ubuntu/monorepoTodoApplicationDevops
+                    git pull origin main
+                    docker compose down
+                    docker compose build
+                    docker compose up -d
+                    docker image prune -f
