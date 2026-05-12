@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth";
 import { NEXT_AUTH_CONFIG } from "../api/auth/[...nextauth]/route";
 import axios from "axios";
 import TodoComponent from "../components/TodoComponent";
+import { BACKEND_URL } from "../../lib/config";
 
 export default async function Dashboard() {
   try {
@@ -11,7 +12,7 @@ export default async function Dashboard() {
       return <p>You are not authenticated</p>;
     }
     const allTodos = await axios.post(
-      "http://localhost:5000/getTodos",
+      `${BACKEND_URL}getTodos`,
       {},
       {
         headers: {

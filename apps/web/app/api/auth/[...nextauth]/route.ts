@@ -2,7 +2,7 @@ import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import axios from "axios";
 
-const BACKEND_URL = "http://localhost:5000/";
+import { BACKEND_URL } from "../../../../lib/config";
 
 export const NEXT_AUTH_CONFIG = {
     providers : [

@@ -1,0 +1,41 @@
+version: '3.8'
+services:
+    postgres:
+      image: postgres
+      container_name: postgres_db
+      ports:
+        - "5432:5432"
+      environment:
+        POSTGRES_PASSWORD: shine
+    backend_app:
+      build: 
+        context: .
+        dockerfile: Docker/Dockerfile.backend
+      ports:
+        - "5000:5000"
+      environment:
+        DATABASE_URL: postgresql://postgres:shine@postgres:5432/week27.2
+      depends_on:
+        - postgres
+    frontend_app:
+      build:
+        context: .
+        dockerfile: Docker/Dockerfile.frontend
+      ports:
+        - "3000:3000"
+      environment:
+        NEXT_PUBLIC_BACKEND_URL_DOCKER: http://backend_app:5000/
+      depends_on:
+        - postgres
+        - backend_app
+    ws_app:
+      build:
+        context: .
+        dockerfile: Docker/Dockerfile.ws
+      ports:
+        - "5001:5001"
+      depends_on:
+        - postgres
+        - backend_app
+
+        

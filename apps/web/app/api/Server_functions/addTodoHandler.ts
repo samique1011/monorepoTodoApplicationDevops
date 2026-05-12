@@ -1,6 +1,5 @@
 import axios from "axios";
-
-const BACKEND_URL = "http://localhost:5000/";
+import { BACKEND_URL } from "../../../lib/config";
 
 export const addTodoHandler = async (token : string , title : string , description : string) => {
     try{

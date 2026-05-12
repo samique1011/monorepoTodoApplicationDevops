@@ -29,3 +29,7 @@ model Todo{
   
   user          User      @relation(fields: [userId] , references: [id])
 }
+
+model Test{
+  id        String        @id         @default(uuid())
+}
