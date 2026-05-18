@@ -7,10 +7,17 @@ import { BACKEND_URL } from "../../lib/config";
 export default async function Dashboard() {
   try {
     const session = await getServerSession(NEXT_AUTH_CONFIG);
-    console.log("token got back = ", session.accesstoken);
+
     if (!session) {
-      return <p>You are not authenticated</p>;
+      return (
+        <div className="min-h-screen flex items-center justify-center bg-gray-100">
+          <p className="text-xl font-semibold text-red-500">
+            You are not authenticated
+          </p>
+        </div>
+      );
     }
+
     const allTodos = await axios.post(
       `${BACKEND_URL}getTodos`,
       {},
@@ -18,15 +25,29 @@ export default async function Dashboard() {
         headers: {
           Authorization: session.accesstoken,
         },
-      },
+      }
     );
-    console.log(allTodos);
-    console.log(allTodos.data.allTodos)
+
     return (
-      <TodoComponent todos = {allTodos.data.allTodos} />
+      <div className="min-h-screen bg-gray-100 py-10 px-4">
+        <div className="max-w-4xl mx-auto">
+          <h1 className="text-4xl font-bold text-gray-800 mb-8 text-center">
+            My Dashboard
+          </h1>
+
+          <TodoComponent todos={allTodos.data.allTodos} />
+        </div>
+      </div>
     );
   } catch (e) {
     console.log((e as any).response);
-    return <p>error</p>;
+
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <p className="text-xl font-semibold text-red-500">
+          Something went wrong
+        </p>
+      </div>
+    );
   }
 }
